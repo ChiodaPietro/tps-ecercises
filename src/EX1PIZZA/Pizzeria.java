@@ -24,7 +24,6 @@ public class Pizzeria extends Thread {
     @Override
     public void run() {
         while (true) {
-
                 waitfororders();
                 try {
                     System.out.println("preparing the pizza for mr " + orders.get(0).getName());
@@ -42,9 +41,7 @@ public class Pizzeria extends Thread {
 public synchronized void waitfororders(){
         while(orders.isEmpty()){
             try {
-                System.out.println("waiting");
                 wait();
-                System.out.println("not waiting");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
