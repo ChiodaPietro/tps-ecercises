@@ -1,53 +1,33 @@
 package EX3PARKING;
 
-public class Main {
+public class Main extends Thread{
+    public Parkinglot parkinglot;
+    public Main(String name){
+        super(name);
+    }
     public static void main(String[] args) throws InterruptedException {
-        Parkinglot parkinglot = new Parkinglot("assurdo");
-        Main main = new Main();
-        main.CarsWaitingOutside();
+        Parkinglot parkinglot = new Parkinglot("assurdo", true);
+        Main main = new Main("Thread main made by me");
+        main.parkinglot=parkinglot;
+        main.start();
 
-        Car c1 = new Car();
-        c1.start();
-        Car c2 = new Car();
-        c2.start();
-        Car c3 = new Car();
-        c3.start();
-        Car c4 = new Car();
-        c4.start();
-        Car c5 = new Car();
-        c5.start();
-        Car c6 = new Car();
-        c6.start();
-        Car c7 = new Car();
-        c7.start();
-        Car c8 = new Car();
-        c8.start();
-        Car c9 = new Car();
-        c9.start();
-        Car c10 = new Car();
-        c10.start();
-        c1.join();
-        c2.join();
-        c3.join();
-        c4.join();
-        c5.join();
-        c6.join();
-        c7.join();
-        c8.join();
-        c9.join();
-        c10.join();
 
+        while (parkinglot.getState()) {
+            new Car(parkinglot).start();
+            Thread.sleep((int) (500 + Math.random() * 1000));
+        }
+
+        parkinglot.remove_all_cars();
     }
 
-    public void CarsWaitingOutside() {
-        while (Parkinglot.cars.size() != 0) {
-            try {
-                Thread.sleep(20000);
-                notifyAll();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
 
+
+    public void run(){
+        try {
+            Thread.sleep(5000);
+            parkinglot.changeState();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -5,9 +5,11 @@ import java.util.UUID;
 public class Car extends Thread {
     private String tag;
     private long time_in;
+    private Parkinglot parkinglot;
 
-    public Car() {
+    public Car(Parkinglot parkinglot) {
         tag = UUID.randomUUID().toString();
+        this.parkinglot=parkinglot;
     }
 
     public String getTag() {
@@ -17,7 +19,7 @@ public class Car extends Thread {
     public void run() {
         boolean exit = false;
         while (!exit) {
-            if (Parkinglot.addCar(this)) {
+            if (parkinglot.addCar(this)) {
                 exit = true;
             } else {
                 try {
@@ -32,7 +34,7 @@ public class Car extends Thread {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        Parkinglot.removeCar(this);
+        parkinglot.removeCar(this);
 
     }
 
